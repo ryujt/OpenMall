@@ -22,3 +22,7 @@
 
 - [쇼핑몰 화면 이동](docs/design/2026-11-22/to-be/navigation.md) — 과업별 다이어그램과 화면 예시
 - [국내 B2C 쇼핑몰 TO-BE 설계서](docs/design/2026-11-22/to-be/system-design-to-be.md) — 목표 구조, 구매·배송·반품 흐름과 인수 기준
+
+## React 프로토타입
+
+[생활 편집숍 실행 및 체험 안내](prototypes/react-storefront/README.md)에서 상품 탐색, 가상 결제, 출고와 환불을 체험할 수 있습니다. [검증 이력](tests/test-history/README.md)에서 브라우저 점검 결과와 화면 캡처를 확인할 수 있습니다.
