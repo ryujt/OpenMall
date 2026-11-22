@@ -1,0 +1,149 @@
+.ops {
+  max-width: 1060px;
+  margin: 0 auto;
+  color: #273427;
+}
+.ops h1 {
+  margin: 0.25em 0 0.6em;
+}
+.ops h2 {
+  margin: 1em 0 0.65em;
+}
+.ops h3 {
+  margin: 8px 0;
+}
+.ops h4 {
+  margin: 12px 0;
+}
+.ops-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.ops-box {
+  background: #f6f6ef;
+  border: 1px solid #d8ddcd;
+  border-radius: 8px;
+  padding: 22px;
+  margin: 14px 0;
+  overflow-wrap: anywhere;
+}
+.ops-auth {
+  max-width: 480px;
+}
+.ops-grid,
+.ops-items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 20px;
+}
+.ops textarea {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  padding: 10px;
+  border: 1px solid #b7beae;
+  border-radius: 4px;
+  resize: vertical;
+  background: #fff;
+}
+.ops form {
+  max-width: 760px;
+}
+.ops small {
+  display: block;
+  letter-spacing: 0.4px;
+}
+.ops li {
+  margin: 0.35em 0;
+  line-height: 1.5;
+}
+.ops-check {
+  display: flex !important;
+  align-items: center;
+  gap: 8px !important;
+}
+.ops summary {
+  cursor: pointer;
+  font-weight: 650;
+  padding-block: 5px;
+}
+.ops details {
+  margin-top: 16px;
+}
+.ops-inset {
+  border-left: 3px solid #8b9b7d;
+  padding: 8px 16px;
+  margin: 14px 0;
+}
+.ops-numbers {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  border-block: 1px solid #d4d8cb;
+  padding: 12px 0;
+}
+.ops dt {
+  font-size: 13px;
+  color: #56634f;
+}
+.ops dd {
+  margin: 4px 0;
+}
+.ops-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+}
+.ops-log {
+  padding-left: 1.3em;
+}
+.ops-tools {
+  border-top: 1px solid #d1d6c7;
+  margin-top: 28px;
+  padding: 16px 0;
+}
+.ops-message:empty {
+  display: none;
+}
+.ops-message:not(:empty) {
+  background: #e3ebda;
+  padding: 12px;
+  border-radius: 4px;
+}
+.ops .actions [aria-pressed="true"] {
+  background: #394f3a;
+  color: white;
+}
+.ops nav {
+  margin: 0;
+}
+.ops select,
+.ops input {
+  max-width: 100%;
+  min-width: 0;
+}
+.ops button {
+  white-space: normal;
+}
+@media (max-width: 700px) {
+  .ops-grid,
+  .ops-items {
+    grid-template-columns: 1fr;
+  }
+  .ops-box {
+    padding: 15px;
+  }
+  .ops-inset {
+    padding: 5px 10px;
+  }
+  .ops-heading {
+    gap: 6px;
+  }
+  .ops .tabs a {
+    font-size: 12px;
+    padding: 7px 10px;
+  }
+}

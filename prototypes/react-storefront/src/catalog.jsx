@@ -1,106 +1,62 @@
 import React, { useState } from "react";
 import {
   ArrowRight,
-  ArrowUpRight,
-  Heart,
-  SlidersHorizontal,
   Search,
-  X,
+  Heart,
   ChevronRight,
+  Package,
+  Truck,
+  ShieldCheck,
 } from "lucide-react";
+import { shippingPolicy } from "./delivery-policy";
 import { money, go } from "./model";
-const chapters = [
-  {
-    title: (
-      <>
-        오래 곁에 두는
-        <br />
-        생활의 기본
-      </>
-    ),
-    subtitle: "부드러운 패브릭과 따뜻한 도자기로 채운 일상.",
-    photo: "editorial",
-    action: "컬렉션 둘러보기",
-  },
-  {
-    title: (
-      <>
-        손끝에 닿는
-        <br />
-        부드러운 결
-      </>
-    ),
-    subtitle: "포근하게 짜인 코튼 핸드타월을 만나보세요.",
-    photo: "towel",
-    action: "핸드타월 보기",
-    id: "cotton-towel",
-  },
-  {
-    title: (
-      <>
-        한 잔으로 여는
-        <br />
-        느긋한 아침
-      </>
-    ),
-    subtitle: "따뜻한 차 한 잔을 위한 스톤웨어 머그.",
-    photo: "mug",
-    action: "머그 보기",
-    id: "stone-mug",
-  },
-];
 export function Catalog({ db, update, savedOnly, search, setSearch }) {
-  const [category, setCategory] = useState("전체");
-  const [sort, setSort] = useState("추천순");
-  const [slide, setSlide] = useState(0);
-  const chapter = chapters[slide];
-  let items = db.products.filter(
+  const policy = shippingPolicy(db);
+  const [category, setCategory] = useState("전체"),
+    [sort, setSort] = useState("recommended"),
+    [draft, setDraft] = useState(search);
+  const active = db.products.filter((p) => p.active !== false);
+  const categories = ["전체", ...new Set(active.map((p) => p.category))];
+  const matches = active.filter(
     (p) =>
       (!savedOnly || db.saved.includes(p.id)) &&
-      (category === "전체" || p.category === category) &&
-      [p.name, p.category, p.brand, p.option].join(" ").includes(search.trim()),
+      (category === "전체" || category === p.category) &&
+      [p.name, p.category, p.option, p.brand, p.sku]
+        .join(" ")
+        .toLowerCase()
+        .includes(search.trim().toLowerCase()),
   );
-  if (sort !== "추천순")
+  const groups = new Map();
+  for (const p of matches) {
+    const group = p.groupId || p.id;
+    if (!groups.has(group) || (!groups.get(group).stock && p.stock))
+      groups.set(group, p);
+  }
+  const items = [...groups.values()];
+  if (sort !== "recommended")
     items.sort((a, b) =>
-      sort === "낮은 가격순" ? a.price - b.price : b.price - a.price,
+      sort === "low" ? a.price - b.price : b.price - a.price,
     );
+  function reset() {
+    setCategory("전체");
+    setDraft("");
+    setSearch("");
+  }
   return (
     <>
       {!savedOnly && (
-        <section className="hero">
-          <div className="herocopy">
-            <small>OPENMALL COLLECTION</small>
-            <h1>{chapter.title}</h1>
-            <p>{chapter.subtitle}</p>
-            <button
-              className="heroaction"
-              onClick={() =>
-                chapter.id
-                  ? go("/products/" + chapter.id)
-                  : document.querySelector("#collection").scrollIntoView()
-              }
-            >
-              {chapter.action}
-              <ArrowRight size={16} />
-            </button>
-            <div className="slides">
-              {chapters.map((_, i) => (
-                <button
-                  key={i}
-                  aria-label={i + 1 + "번째 컬렉션"}
-                  aria-pressed={i === slide}
-                  onClick={() => setSlide(i)}
-                >
-                  <i />
-                </button>
-              ))}
-              <span>0{slide + 1} / 03</span>
-            </div>
+        <section className="shop-banner">
+          <div>
+            <small>OPENMALL LIVING</small>
+            <h1>일상에 필요한 물건</h1>
+            <p>소재와 쓰임을 살펴 고르는 생활 편집숍</p>
+            <a href="#/products/cotton-towel">
+              코튼 핸드타월 보기 <ArrowRight size={16} />
+            </a>
           </div>
           <img
-            className="herophoto"
-            src={"/images/" + chapter.photo + ".webp"}
-            alt="햇살이 비치는 생활 소품 컬렉션"
+            src="/images/editorial.webp"
+            alt="햇살이 드는 테이블 위 머그와 리넨"
           />
         </section>
       )}
@@ -108,110 +64,168 @@ export function Catalog({ db, update, savedOnly, search, setSearch }) {
         <div className="sectiontitle">
           <div>
             <small>{savedOnly ? "WISHLIST" : "SHOP THE COLLECTION"}</small>
-            <h2>{savedOnly ? "찜한 상품" : "생활 셀렉션"}</h2>
+            <h2>{savedOnly ? "찜한 상품" : "상품 찾기"}</h2>
           </div>
-          <label className="sort">
-            <SlidersHorizontal size={15} />
-            <select
-              aria-label="상품 정렬"
-              value={sort}
-              onChange={(e) => setSort(e.target.value)}
-            >
-              {["추천순", "낮은 가격순", "높은 가격순"].map((s) => (
-                <option key={s}>{s}</option>
-              ))}
-            </select>
-          </label>
         </div>
-        <div className="filterrow">
-          <div className="tabs">
-            {["전체", "패브릭", "키친", "배스"].map((c) => (
-              <button
-                key={c}
-                aria-pressed={category === c}
-                onClick={() => setCategory(c)}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
-          <span>{items.length}개 상품</span>
-        </div>
-        {search && (
-          <button className="clear" onClick={() => setSearch("")}>
-            검색어 {search}
-            <X size={14} />
-          </button>
-        )}
-        <div className="cards">
-          {items.map((p) => (
-            <article key={p.id}>
-              <div className="cardphoto">
-                <a href={"#/products/" + p.id}>
-                  <img src={"/images/" + p.photo + ".webp"} alt={p.name} />
-                </a>
-                <button
-                  aria-label={p.name + " 찜"}
-                  aria-pressed={db.saved.includes(p.id)}
-                  className="heart"
-                  onClick={() =>
-                    update({
-                      ...db,
-                      saved: db.saved.includes(p.id)
-                        ? db.saved.filter((id) => id !== p.id)
-                        : [...db.saved, p.id],
-                    })
-                  }
-                >
-                  <Heart
-                    size={17}
-                    fill={db.saved.includes(p.id) ? "currentColor" : "none"}
-                  />
-                </button>
-              </div>
-              <a href={"#/products/" + p.id}>
-                <small>
-                  {p.brand} · {p.category}
-                </small>
-                <h3>{p.name}</h3>
-                <strong>{p.stock ? money(p.price) : "품절"}</strong>
-              </a>
-            </article>
-          ))}
-        </div>
-        {!items.length && (
-          <div className="empty">
-            <Search />
-            <h3>
-              {savedOnly
-                ? "조건에 맞는 찜한 상품이 없습니다"
-                : "검색된 상품이 없습니다"}
-            </h3>
-            <button
-              onClick={() => {
-                setCategory("전체");
-                setSearch("");
-                if (savedOnly) go("/");
+        <div className="catalog-layout">
+          <aside className="filter-panel">
+            <h3>검색 조건</h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setSearch(draft);
               }}
             >
-              전체 상품 보기
-            </button>
-          </div>
-        )}
+              <label>
+                상품 검색
+                <span className="searchfield">
+                  <input
+                    type="search"
+                    placeholder="상품명 또는 옵션"
+                    value={draft}
+                    onChange={(e) => setDraft(e.target.value)}
+                  />
+                  <button aria-label="검색">
+                    <Search size={18} />
+                  </button>
+                </span>
+              </label>
+            </form>
+            <fieldset>
+              <legend>카테고리</legend>
+              {categories.map((c) => (
+                <button
+                  key={c}
+                  aria-pressed={category === c}
+                  onClick={() => setCategory(c)}
+                >
+                  {c}
+                </button>
+              ))}
+            </fieldset>
+            <button onClick={reset}>조건 초기화</button>
+          </aside>
+          <section>
+            <div className="results-bar">
+              <b>
+                {category === "전체" ? "전체 상품" : category}{" "}
+                <span>{items.length}</span>
+              </b>
+              <label>
+                <select
+                  aria-label="상품 정렬"
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                >
+                  <option value="recommended">추천순</option>
+                  <option value="low">낮은 가격순</option>
+                  <option value="high">높은 가격순</option>
+                </select>
+              </label>
+            </div>
+            <div className="cards">
+              {items.map((p) => (
+                <article key={p.id}>
+                  <div className="cardphoto">
+                    <a href={"#/products/" + p.id}>
+                      <img alt={p.name} src={"/images/" + p.photo + ".webp"} />
+                    </a>
+                    <button
+                      className="heart"
+                      aria-label={p.name + " 찜"}
+                      aria-pressed={db.saved.includes(p.id)}
+                      onClick={() =>
+                        update({
+                          ...db,
+                          saved: db.saved.includes(p.id)
+                            ? db.saved.filter((i) => i !== p.id)
+                            : [...db.saved, p.id],
+                        })
+                      }
+                    >
+                      <Heart
+                        size={16}
+                        fill={db.saved.includes(p.id) ? "currentColor" : "none"}
+                      />
+                    </button>
+                  </div>
+                  <a href={"#/products/" + p.id}>
+                    <small>
+                      {p.brand} · {p.category}
+                    </small>
+                    <h3>{p.name}</h3>
+                    <p>{p.option}</p>
+                    <strong>{money(p.price)}</strong>
+                    {!p.stock && <b> · 품절</b>}
+                    <p>일반 배송 포함 {money(p.price + policy.baseFare)}</p>
+                  </a>
+                </article>
+              ))}
+            </div>
+            {!items.length && (
+              <div className="empty">
+                <Search />
+                <h3>
+                  {savedOnly
+                    ? "조건에 맞는 찜한 상품이 없습니다"
+                    : "검색된 상품이 없습니다"}
+                </h3>
+                <button
+                  onClick={() => {
+                    reset();
+                    go("/");
+                  }}
+                >
+                  전체 상품 보기
+                </button>
+              </div>
+            )}
+            <p className="muted">
+              기본 배송비 {money(policy.baseFare)}. 도서·산간 추가비는 배송
+              지역에 따라 주문서에서 확정됩니다.
+            </p>
+          </section>
+        </div>
       </section>
     </>
   );
 }
 export function Product({ product: p, db, update }) {
-  const [qty, setQty] = useState(1);
-  const available = p.stock - (db.cart[p.id] || 0);
+  const policy = shippingPolicy(db);
+  const [qty, setQty] = useState("1");
+  const options = db.products.filter(
+    (v) =>
+      (v.groupId || v.id) === (p.groupId || p.id) &&
+      (v.active !== false || v.id === p.id),
+  );
+  const valid =
+    Number.isInteger(+qty) &&
+    +qty >= 1 &&
+    +qty <= p.stock &&
+    p.active !== false;
+  async function buy(toCart) {
+    if (!valid) return;
+    if (
+      !(await update(
+        toCart
+          ? {
+              ...db,
+              cart: { ...db.cart, [p.id]: (db.cart[p.id] || 0) + Number(qty) },
+              cartPrices: { ...db.cartPrices, [p.id]: p.price },
+            }
+          : { ...db, transfer: null, direct: { [p.id]: Number(qty) } },
+      ))
+    )
+      return;
+    go(toCart ? "/cart" : "/checkout/direct");
+  }
   return (
     <>
       <a className="crumb" href="#/">
-        생활 셀렉션 <ChevronRight size={14} /> {p.category}
+        상품 찾기 <ChevronRight size={14} /> {p.category}
       </a>
       <section className="product">
-        <img src={"/images/" + p.photo + ".webp"} alt={p.name} />
+        <img alt={p.name} src={"/images/" + p.photo + ".webp"} />
         <div>
           <small>
             {p.brand} · {p.category}
@@ -220,8 +234,28 @@ export function Product({ product: p, db, update }) {
           <h2>{money(p.price)}</h2>
           <p>{p.description}</p>
           <hr />
-          <p>옵션　{p.option}</p>
-          <p>배송비　3,000원 · 도서산간 6,000원</p>
+          <label>
+            색상과 규격
+            <select
+              value={p.id}
+              onChange={(e) => go("/products/" + e.target.value)}
+            >
+              {options.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.option}
+                  {v.stock ? "" : " · 품절"}
+                </option>
+              ))}
+            </select>
+          </label>
+          <p>
+            {p.active === false
+              ? "판매 종료"
+              : p.stock
+                ? "판매 가능 " + p.stock + "개"
+                : "품절"}{" "}
+            · SKU {p.sku || p.id}
+          </p>
           <label>
             수량
             <input
@@ -232,38 +266,71 @@ export function Product({ product: p, db, update }) {
               onChange={(e) => setQty(e.target.value)}
             />
           </label>
+          <p>
+            일반 배송 포함{" "}
+            {money(p.price * (Number(qty) || 0) + policy.baseFare)} · 도서산간
+            추가 {money(policy.islandFare - policy.baseFare)}
+          </p>
           <div className="actions">
             <button
-              disabled={
-                !(Number.isInteger(+qty) && qty >= 1 && qty <= available)
-              }
-              onClick={() => {
-                update({
-                  ...db,
-                  cart: {
-                    ...db.cart,
-                    [p.id]: (db.cart[p.id] || 0) + Number(qty),
-                  },
-                });
-                go("/cart");
-              }}
+              disabled={!valid || +qty + (db.cart[p.id] || 0) > p.stock}
+              onClick={() => buy(true)}
             >
               장바구니 담기
             </button>
             <button
               className="primary"
-              disabled={!(Number.isInteger(+qty) && qty >= 1 && qty <= p.stock)}
-              onClick={() => {
-                update({ ...db, direct: { [p.id]: +qty } });
-                go("/checkout/direct");
-              }}
+              disabled={!valid}
+              onClick={() => buy(false)}
             >
-              {p.stock ? "바로 구매" : "품절"}
-              <ArrowUpRight size={16} />
+              {p.active === false
+                ? "판매 종료"
+                : p.stock
+                  ? "바로 구매"
+                  : "품절"}
             </button>
           </div>
         </div>
       </section>
+      <div className="info-grid">
+        <section>
+          <Package size={20} />
+          <h2>상품 정보</h2>
+          <dl>
+            {[
+              ["소재", p.material],
+              ["색상·규격", p.option],
+              ["제조국", p.origin],
+              ["취급 방법", p.care],
+              ["고시 버전", p.version],
+            ].map(([k, v]) => (
+              <div key={k}>
+                <dt>{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+        <section>
+          <Truck size={20} />
+          <h2>공급·배송</h2>
+          <p>
+            국내 단일 창고에서 택배로 발송합니다. 택배 마감은 한국 시간{" "}
+            {policy.cutoff}입니다. 별도 약정이 없는 선지급 주문은 결제일부터
+            3영업일 이내에 공급에 필요한 조치를 진행합니다.
+          </p>
+        </section>
+        <section>
+          <ShieldCheck size={20} />
+          <h2>교환·반품 및 보증</h2>
+          <p>
+            주문 상세에서 품목과 수량을 지정하세요. 단순변심은 수령 후 7일,
+            불일치는 공급 후 3개월과 발견 후 30일 기준을 확인합니다. 단순변심
+            회수비는 구매자, 하자·오배송은 판매자가 부담합니다.
+          </p>
+          <a href="#/help">상담 및 거래 조건 →</a>
+        </section>
+      </div>
     </>
   );
 }
