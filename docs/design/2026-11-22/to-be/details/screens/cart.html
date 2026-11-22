@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>장바구니 · OpenMall</title>
+<link rel="stylesheet" href="assets/screens.css">
+<script defer src="assets/scenes.js"></script>
+</head>
+<body>
+<aside class="review"><span>설계 미리보기 · 예시 데이터</span><label>장면 <select id="scene"><option value="base">담은 상품</option><option value="empty">빈 장바구니</option><option value="change">상품 조건 변경</option><option value="quantity">장바구니 수량 변경</option></select></label></aside>
+<header><div class="wrap bar"><a class="wordmark" href="catalog.html">OpenMall</a><nav aria-label="주요 메뉴"><a href="catalog.html">상품 찾기</a><a href="cart.html" aria-current="page">장바구니</a><a href="orders.html">내 주문</a><a href="access.html">계정</a></nav></div></header>
+<main class="wrap"><h1>장바구니</h1><div id="base" class="scene"><div class="grid"><section class="box"><h2>담은 상품</h2><dl><div><dt>상품</dt><dd>코튼 핸드타월</dd></div><div><dt>옵션</dt><dd>세이지 · 40 × 70 cm</dd></div><div><dt>수량</dt><dd>2개</dd></div><div><dt>상품 금액</dt><dd>24,000원</dd></div></dl><div class="actions"><a class="action" href="#quantity">수량 변경</a><a class="action" href="#empty">상품 삭제</a><a class="action" href="product.html">옵션 확인</a></div></section><section class="box"><h2>주문 예상액</h2><dl><div><dt>상품 금액</dt><dd>24,000원</dd></div><div><dt>기본 배송비</dt><dd>3,000원</dd></div><div><dt>결제 예정 금액</dt><dd>27,000원</dd></div></dl><div class="actions"><a class="button" href="checkout.html">주문하기</a></div></section></div></div>
+<div id="empty" class="scene" hidden><section class="box"><h2>장바구니가 비었습니다</h2><p>구매할 상품을 골라 장바구니에 담아 주세요.</p><div class="actions"><a class="button" href="catalog.html">상품 찾기</a></div></section></div>
+<div id="change" class="scene" hidden><section class="box"><h2>재고가 변경되었습니다</h2><p>선택한 세이지 옵션이 품절되어 주문할 수 없습니다.</p><div class="actions"><a class="action" href="product.html#sold">상품 상태 확인</a><a class="action" href="#empty">품절 상품 삭제</a></div></section></div>
+<div id="quantity" class="scene" hidden><section class="box"><h2>수량 변경</h2><p>코튼 핸드타월 · 세이지 · 개당 12,000원</p><form data-target="#base"><label>수량<input id="cart-count" type="number" min="1" max="18" value="2" required></label><output id="cart-quote">상품 금액 24,000원</output><button type="submit">적용</button></form></section></div></main>
+<footer class="wrap"><details><summary>판매자 정보 · 고객상담</summary><p>교육용 상점 예시입니다. 실제 판매 화면에는 상호, 대표자명, 영업소 주소, 전화·전자우편, 사업자등록번호, 통신판매업 신고정보와 약관·개인정보 처리방침을 게시합니다.</p></details></footer>
+</body>
+</html>

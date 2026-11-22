@@ -16,9 +16,9 @@
 | 6부. 다이어그램 그리기 | Navigation·State·Job Flow 다이어그램을 직접 그리기 |
 | 7부. 잘 알려진 프로젝트 시작하기 | **OpenMall** 쇼핑몰을 Navigation 다이어그램과 백엔드 없는 가상 사이트로 시작하기 |
 
-이 저장소는 7부의 실습 대상입니다. 강의 본문에 실린 쇼핑몰 화면 이동 다이어그램은 [`docs/navigation.md`](docs/navigation.md)에 그대로 담겨 있습니다.
+이 저장소는 7부의 실습 대상입니다. 국내 쇼핑몰 설계안에서 구매자와 운영자의 [화면 이동](docs/design/2026-11-22/to-be/navigation.md)을 살펴볼 수 있습니다.
 
 ## 저장소 구성
 
-- [`docs/navigation.md`](docs/navigation.md) — 쇼핑몰 화면 이동(Navigation) 다이어그램
-- [`docs/design/`](docs/design/) — TO-BE 시스템 설계서
+- [쇼핑몰 화면 이동](docs/design/2026-11-22/to-be/navigation.md) — 과업별 다이어그램과 화면 예시
+- [국내 B2C 쇼핑몰 TO-BE 설계서](docs/design/2026-11-22/to-be/system-design-to-be.md) — 목표 구조, 구매·배송·반품 흐름과 인수 기준

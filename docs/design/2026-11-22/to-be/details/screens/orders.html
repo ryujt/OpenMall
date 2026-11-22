@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>내 주문 · OpenMall</title>
+<link rel="stylesheet" href="assets/screens.css">
+<script defer src="assets/scenes.js"></script>
+</head>
+<body>
+<aside class="review"><span>설계 미리보기 · 예시 데이터</span><label>장면 <select id="scene"><option value="base">주문 목록</option><option value="empty">주문 없음</option></select></label></aside>
+<header><div class="wrap bar"><a class="wordmark" href="catalog.html">OpenMall</a><nav aria-label="주요 메뉴"><a href="catalog.html">상품 찾기</a><a href="cart.html">장바구니</a><a href="orders.html" aria-current="page">내 주문</a><a href="access.html">계정</a></nav></div></header>
+<main class="wrap"><h1>내 주문</h1><div id="base" class="scene"><div class="grid"><section class="box"><h2>2026년 11월</h2><dl><div><dt>주문번호</dt><dd>OM-261122-0184</dd></div><div><dt>상품</dt><dd>코튼 핸드타월 외 옵션 수량 2개</dd></div><div><dt>주문 상태</dt><dd>배송완료</dd></div></dl><div class="actions"><a class="button" href="order.html">주문 상세</a></div></section><section class="box"><h2>비회원으로 주문하셨나요?</h2><p>주문 당시의 연락처와 주문번호를 준비하세요.</p><div class="actions"><a class="action" href="access.html#guest">비회원 주문 조회</a></div></section></div></div>
+<div id="empty" class="scene" hidden><section class="box"><h2>표시할 주문이 없습니다</h2><p>회원 계정으로 접수한 주문이 이곳에 표시됩니다.</p><div class="actions"><a class="action" href="catalog.html">상품 보러 가기</a></div></section></div></main>
+<footer class="wrap"><details><summary>판매자 정보 · 고객상담</summary><p>교육용 상점 예시입니다. 실제 판매 화면에는 상호, 대표자명, 영업소 주소, 전화·전자우편, 사업자등록번호, 통신판매업 신고정보와 약관·개인정보 처리방침을 게시합니다.</p></details></footer>
+</body>
+</html>

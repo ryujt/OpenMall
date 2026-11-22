@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>회원 정보 · OpenMall</title>
+<link rel="stylesheet" href="assets/screens.css">
+<script defer src="assets/scenes.js"></script>
+</head>
+<body>
+<aside class="review"><span>설계 미리보기 · 예시 데이터</span><label>장면 <select id="scene"><option value="base">회원 정보</option><option value="address">배송지 편집</option><option value="saved">배송지 저장</option><option value="withdraw">탈퇴 확인</option></select></label></aside>
+<header><div class="wrap bar"><a class="wordmark" href="catalog.html">OpenMall</a><nav aria-label="주요 메뉴"><a href="catalog.html">상품 찾기</a><a href="cart.html">장바구니</a><a href="orders.html">내 주문</a><a href="access.html">계정</a></nav></div></header>
+<main class="wrap"><h1>회원 정보</h1><div id="base" class="scene"><div class="grid"><section class="box"><h2>계정 정보</h2><dl><div><dt>회원 이름</dt><dd>김○○</dd></div><div><dt>이메일</dt><dd>m***@example.com</dd></div></dl><div class="actions"><a class="action" href="orders.html">내 주문 보기</a><a class="action" href="access.html">로그아웃</a><a class="action" href="#withdraw">회원 탈퇴</a></div></section><section class="box"><h2>기본 배송지</h2><dl><div><dt>배송지</dt><dd>서울 마포구 · 기본 배송지</dd></div><div><dt>배송 방법</dt><dd>국내 일반택배</dd></div><div><dt>예상 배송비</dt><dd>3,000원</dd></div></dl><div class="actions"><a class="button" href="#address">배송지 편집</a></div></section></div></div>
+<div id="address" class="scene" hidden><section class="box"><h2>배송지 입력</h2><form data-target="#saved"><label>받는 분<input type="text" value="" required></label><label>휴대전화<input type="tel" value="" required></label><label>우편번호<input type="text" value="" required></label><label>도로명 주소<input type="text" value="" required></label><label>상세 주소<input type="text" value="" ></label><button type="submit">배송지 저장</button></form></section></div>
+<div id="saved" class="scene" hidden><section class="box"><h2>배송지를 저장했습니다</h2><p>새 주문에 사용할 기본 배송지가 변경되었습니다.</p><div class="actions"><a class="action" href="#base">회원 정보</a></div></section></div>
+<div id="withdraw" class="scene" hidden><section class="box"><h2>탈퇴 전 확인</h2><p>로그인과 주소록 이용이 종료됩니다. 보존 의무가 있는 거래기록은 해당 기간 분리 보관하며, 기존 주문 문의는 고객상담에서 접수합니다.</p><form data-target="access.html"><label>비밀번호 재확인<input type="password" value="" required></label><label class="choice"><input type="checkbox" required>탈퇴 처리 내용을 확인했습니다</label><button type="submit">탈퇴 신청</button></form><div class="actions"><a class="action" href="#base">돌아가기</a></div></section></div></main>
+<footer class="wrap"><details><summary>판매자 정보 · 고객상담</summary><p>교육용 상점 예시입니다. 실제 판매 화면에는 상호, 대표자명, 영업소 주소, 전화·전자우편, 사업자등록번호, 통신판매업 신고정보와 약관·개인정보 처리방침을 게시합니다.</p></details></footer>
+</body>
+</html>
